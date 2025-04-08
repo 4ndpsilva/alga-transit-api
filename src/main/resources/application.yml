@@ -1,3 +1,13 @@
 spring:
   application:
     name: alga-transit-api
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/alga_transit_db?createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: root
+    password: 123
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog-master.xml
+    database-change-log-table: TB_DATABASE_CHANGE_LOG
+    database-change-log-lock-table: TB_DATABASE_CHANGE_LOG_LOCK

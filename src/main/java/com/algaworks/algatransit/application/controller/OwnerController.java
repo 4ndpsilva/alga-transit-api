@@ -1,4 +1,4 @@
-package com.algaworks.algatransit.controller;
+package com.algaworks.algatransit.application.controller;
 
 import com.algaworks.algatransit.domain.model.entity.Owner;
 import java.util.List;
@@ -24,6 +24,12 @@ public class OwnerController {
                 .id(2L)
                 .name("Helena")
                 .phone("987654321")
+                .email("email@dominio.com")
+                .build(),
+            Owner.builder()
+                .id(3L)
+                .name("Charles")
+                .phone("888888888")
                 .email("email@dominio.com")
                 .build()
         );
