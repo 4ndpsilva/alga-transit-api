@@ -33,7 +33,8 @@ public class OwnerController {
     @GetMapping("/{id}")
     public ResponseEntity<Owner> findById(@PathVariable Long id){
         Optional<Owner> opOwner = repository.findById(id);
-        return opOwner.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return opOwner.map(ResponseEntity::ok)
+            .orElseGet(ResponseEntity.notFound()::build);
     }
 
     public ResponseEntity<Owner> save(@RequestBody Owner owner){
