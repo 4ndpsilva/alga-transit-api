@@ -4,16 +4,26 @@ spring:
   jmx:
     enabled: false
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/alga_transit_db?createDatabaseIfNotExist=true&serverTimezone=UTC
-    username: root
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/alga_transit_db?createDatabaseIfNotExist=true&serverTimezone=UTC
+#    username: root
+#    password: 123
+#  jpa:
+#    database-platform: org.hibernate.dialect.MySQLDialect
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:alga_transit_db
+    username: sa
     password: 123
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: none
+  h2:
+    console:
+      enabled: true
+      path: /h2
   liquibase:
     enabled: true
-    change-log: classpath:db/changelog-master.xml
+    change-log: classpath:/db/changelog-master.xml
     database-change-log-table: TB_DATABASE_CHANGE_LOG
     database-change-log-lock-table: TB_DATABASE_CHANGE_LOG_LOCK

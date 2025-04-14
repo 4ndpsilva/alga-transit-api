@@ -33,4 +33,24 @@
     <changeSet id="0002-add-unique-email" author="aps">
         <addUniqueConstraint tableName="TB_OWNER" columnNames="email"/>
     </changeSet>
+
+    <changeSet id="0003-inserts" author="aps">
+        <insert tableName="TB_OWNER">
+            <column name="name" value="Augusta Souza"/>
+            <column name="email" value="email1@provedor.com"/>
+            <column name="phone" value="1234567890"/>
+        </insert>
+
+        <insert tableName="TB_OWNER">
+            <column name="name" value="João Batista"/>
+            <column name="email" value="email2@provedor.com"/>
+            <column name="phone" value="1234567890"/>
+        </insert>
+
+        <insert tableName="TB_OWNER">
+            <column name="name" value="Célia Menezes"/>
+            <column name="email" value="email3@provedor.com"/>
+            <column name="phone" value="1234567890"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>
