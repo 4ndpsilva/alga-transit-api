@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,21 +32,34 @@ public class OwnerController {
     }
 
     @PutMapping("/{id}")
-    @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<OwnerDTO> update(@PathVariable Long id, @RequestBody @Valid OwnerDTO requestDTO){
-        return ResponseEntity.ok(service.update(id, requestDTO));
+        try {
+            return ResponseEntity.ok(service.update(id, requestDTO));
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
-        service.delete(id);
-        return ResponseEntity.noContent().build();
+        try{
+            service.delete(id);
+            return ResponseEntity.noContent().build();
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/{id}")
-    @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<OwnerDTO> findById(@PathVariable Long id){
-        return ResponseEntity.ok(service.findById(id));
+        try{
+            return ResponseEntity.ok(service.findById(id));
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/name/{name}")
