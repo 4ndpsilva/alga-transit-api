@@ -1,5 +1,6 @@
 package com.algaworks.algatransit.domain.model.entity;
 
+import com.algaworks.algatransit.domain.exception.BusinessException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,11 +31,21 @@ public class Owner {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Owner && Objects.equals(this, obj);
+        return (obj instanceof Owner owner) && this.id.equals(owner.id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public void validateExistingEmail(Owner owner){
+        if(existingEmail(owner)){
+            throw new BusinessException("O email informado já existe");
+        }
+    }
+
+    private boolean existingEmail(Owner owner){
+        return this.email.equals(owner.getEmail()) && !this.equals(owner);
     }
 }

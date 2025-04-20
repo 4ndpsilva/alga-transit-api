@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="create-table-vehicle" author="aps">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="TB_VEHICLE"/>
+            </not>
+        </preConditions>
+        <createTable tableName="TB_VEHICLE">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="owner_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="brand" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="model" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="plate" type="varchar(7)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="status" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="registration_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="date_of_seizure" type="datetime"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+            baseTableName="TB_VEHICLE"
+            baseColumnNames="owner_id"
+            constraintName="fk_vehicle"
+            referencedTableName="TB_OWNER"
+            referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <changeSet id="add-unique-plate" author="aps">
+        <addUniqueConstraint tableName="TB_VEHICLE" columnNames="plate"/>
+    </changeSet>
+
+    <changeSet id="insert-vehicles" author="aps">
+        <insert tableName="TB_VEHICLE">
+            <column name="owner_id" value="1"/>
+            <column name="brand" value="Audi"/>
+            <column name="model" value="A3"/>
+            <column name="plate" value="aaa-123"/>
+            <column name="status" value="REGULAR"/>
+            <column name="registration_date" value="now()"/>
+        </insert>
+
+        <insert tableName="TB_VEHICLE">
+            <column name="owner_id" value="1"/>
+            <column name="brand" value="Volksvagem"/>
+            <column name="model" value="Fusca"/>
+            <column name="plate" value="bbb-333"/>
+            <column name="status" value="SEIZED"/>
+            <column name="registration_date" value="now()"/>
+            <column name="date_of_seizure" value="now()"/>
+        </insert>
+
+        <insert tableName="TB_VEHICLE">
+            <column name="owner_id" value="2"/>
+            <column name="brand" value="Ferrari"/>
+            <column name="model" value="F50"/>
+            <column name="plate" value="xxx-555"/>
+            <column name="status" value="SEIZED"/>
+            <column name="registration_date" value="now()"/>
+            <column name="date_of_seizure" value="now()"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

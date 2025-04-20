@@ -6,4 +6,5 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <include file="create-table-owner.xml" relativeToChangelogFile="true"/>
+    <include file="create-table-vehicle.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

@@ -1,9 +1,9 @@
 package com.algaworks.algatransit.domain.service;
 
+import com.algaworks.algatransit.domain.exception.BusinessException;
 import com.algaworks.algatransit.domain.mapper.OwnerMapper;
 import com.algaworks.algatransit.domain.model.dto.OwnerDTO;
 import com.algaworks.algatransit.domain.model.entity.Owner;
-import com.algaworks.algatransit.domain.repository.OwnerConcreteRepository;
 import com.algaworks.algatransit.domain.repository.OwnerRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -14,30 +14,38 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class OwnerService {
     private final OwnerRepository repository;
-    private final OwnerConcreteRepository concreteRepository;
     private final OwnerMapper mapper;
 
     @Transactional
     public OwnerDTO save(OwnerDTO dto){
-        Owner owner = mapper.toEntity(dto);
-        return mapper.toDTO(repository.save(owner));
+        Owner newOwner = mapper.toEntity(dto);
+        boolean existing = repository.findByEmail(newOwner.getEmail()).isPresent();
+
+        if(existing){
+            throw new BusinessException("O email informado já existe");
+        }
+
+        return mapper.toDTO(repository.save(newOwner));
     }
 
     @Transactional
     public OwnerDTO update(Long id, OwnerDTO dto){
         if(!repository.existsById(id)){
-            throw new RuntimeException("Owner not found");
+            throw new BusinessException("Proprietário não encontrado");
         }
 
         Owner owner = mapper.toEntity(dto);
         owner.setId(id);
+
+        Owner existingOwner = repository.findByEmail(owner.getEmail()).orElse(Owner.builder().build());
+        owner.validateExistingEmail(existingOwner);
         return mapper.toDTO(repository.save(owner));
     }
 
     @Transactional
     public void delete(Long id){
         if(!repository.existsById(id)){
-            throw new RuntimeException("Owner not found");
+            throw new BusinessException("Proprietário não encontrado");
         }
 
         repository.deleteById(id);
@@ -45,7 +53,7 @@ public class OwnerService {
 
     public OwnerDTO findById(Long id){
         if(!repository.existsById(id)){
-            throw new RuntimeException("Owner not found");
+            throw new BusinessException("Proprietário não encontrado");
         }
 
         return mapper.toDTO(repository.findById(id).get());
@@ -57,9 +65,5 @@ public class OwnerService {
 
     public List<OwnerDTO> findAll(){
         return mapper.toListDTO(repository.findAll());
-    }
-
-    public List<OwnerDTO> findAllByConcreteRepository(){
-        return mapper.toListDTO(concreteRepository.findAll());
     }
 }
