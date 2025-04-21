@@ -1,6 +1,9 @@
 package com.algaworks.algatransit.domain.service;
 
-import com.algaworks.algatransit.domain.exception.BusinessException;
+import static com.algaworks.algatransit.domain.model.entity.Vehicle.VehicleMsg.VEHICLE_002;
+
+import com.algaworks.algatransit.domain.exception.AlreadyExistsException;
+import com.algaworks.algatransit.domain.exception.ResourceNotFoundException;
 import com.algaworks.algatransit.domain.mapper.OwnerMapper;
 import com.algaworks.algatransit.domain.mapper.VehicleMapper;
 import com.algaworks.algatransit.domain.model.dto.OwnerDTO;
@@ -9,6 +12,7 @@ import com.algaworks.algatransit.domain.model.dto.VehicleResponseDTO;
 import com.algaworks.algatransit.domain.model.entity.Owner;
 import com.algaworks.algatransit.domain.model.entity.StatusVehicle;
 import com.algaworks.algatransit.domain.model.entity.Vehicle;
+import com.algaworks.algatransit.domain.model.entity.Vehicle.VehicleMsg;
 import com.algaworks.algatransit.domain.repository.VehicleRepository;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +33,7 @@ public class VehicleService {
         boolean existingPlate = repository.findByPlate(dto.getPlate()).isPresent();
 
         if(existingPlate){
-            throw new BusinessException(String.format("Já existe um veículo cadastrado com a placa %s", dto.getPlate()));
+            throw new AlreadyExistsException(VEHICLE_002, dto.getPlate());
         }
 
         Vehicle newVehicle = mapper.toEntity(dto);
@@ -58,7 +62,7 @@ public class VehicleService {
     @Transactional
     public void delete(Long id){
         if(!repository.existsById(id)){
-            throw new BusinessException("Veículo não encontrado");
+            throw new ResourceNotFoundException(VehicleMsg.VEHICLE_001);
         }
 
         repository.deleteById(id);

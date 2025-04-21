@@ -1,7 +1,6 @@
 package com.algaworks.algatransit.domain.model.entity;
 
-
-import com.algaworks.algatransit.domain.exception.BusinessException;
+import com.algaworks.algatransit.domain.exception.AlreadyExistsException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -57,7 +56,7 @@ public class Vehicle {
 
     public void validateExistingPLate(Vehicle vehicle){
         if(existingPlate(vehicle)){
-            throw new BusinessException(String.format("Já existe um veículo cadastrado com a placa %s", vehicle.getPlate()));
+            throw new AlreadyExistsException(VehicleMsg.VEHICLE_002, vehicle.getPlate());
         }
     }
 
@@ -73,5 +72,11 @@ public class Vehicle {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public interface VehicleMsg{
+        String VEHICLE_001 = "VEHICLE-001";
+        String VEHICLE_002 = "VEHICLE-002";
+        String VEHICLE_003 = "VEHICLE-003";
     }
 }

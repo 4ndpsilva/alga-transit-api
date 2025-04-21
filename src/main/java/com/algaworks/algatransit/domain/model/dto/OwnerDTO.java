@@ -18,11 +18,11 @@ public class OwnerDTO {
     @JsonProperty(access = Access.READ_ONLY)
     private Long id;
 
-    @Size(max = 60)
+    @Size(min = 3, max = 60)
     @NotBlank
     private String name;
 
-    @Size(max = 255)
+    @Size(min = 10, max = 255)
     @Email
     @NotBlank
     private String email;

@@ -1,6 +1,10 @@
 package com.algaworks.algatransit.domain.service;
 
-import com.algaworks.algatransit.domain.exception.BusinessException;
+import static com.algaworks.algatransit.domain.model.entity.Owner.OwnerMsg.OWNER_001;
+import static com.algaworks.algatransit.domain.model.entity.Owner.OwnerMsg.OWNER_002;
+
+import com.algaworks.algatransit.domain.exception.AlreadyExistsException;
+import com.algaworks.algatransit.domain.exception.ResourceNotFoundException;
 import com.algaworks.algatransit.domain.mapper.OwnerMapper;
 import com.algaworks.algatransit.domain.model.dto.OwnerDTO;
 import com.algaworks.algatransit.domain.model.entity.Owner;
@@ -23,7 +27,7 @@ public class OwnerService {
         boolean existing = repository.findByEmail(newOwner.getEmail()).isPresent();
 
         if(existing){
-            throw new BusinessException("O email informado já existe");
+            throw new AlreadyExistsException(OWNER_002);
         }
 
         return mapper.toDTO(repository.save(newOwner));
@@ -32,7 +36,7 @@ public class OwnerService {
     @Transactional
     public OwnerDTO update(Long id, OwnerDTO dto){
         if(!repository.existsById(id)){
-            throw new BusinessException("Proprietário não encontrado");
+            throw new ResourceNotFoundException(OWNER_001);
         }
 
         Owner owner = mapper.toEntity(dto);
@@ -45,7 +49,7 @@ public class OwnerService {
     @Transactional
     public void delete(Long id){
         if(!repository.existsById(id)){
-            throw new BusinessException("Proprietário não encontrado");
+            throw new ResourceNotFoundException(OWNER_001);
         }
 
         repository.deleteById(id);
@@ -55,7 +59,7 @@ public class OwnerService {
         Optional<Owner> opOwner = repository.findById(id);
 
         return opOwner.map(mapper::toDTO)
-            .orElseThrow(() -> new BusinessException("Proprietário não encontrado"));
+            .orElseThrow(() -> new ResourceNotFoundException(OWNER_001));
     }
 
     public List<OwnerDTO> findByName(String name){
