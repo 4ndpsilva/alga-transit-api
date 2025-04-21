@@ -6,6 +6,7 @@ import com.algaworks.algatransit.domain.model.dto.OwnerDTO;
 import com.algaworks.algatransit.domain.model.entity.Owner;
 import com.algaworks.algatransit.domain.repository.OwnerRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,6 @@ public class OwnerService {
 
         Owner owner = mapper.toEntity(dto);
         owner.setId(id);
-
         Owner existingOwner = repository.findByEmail(owner.getEmail()).orElse(Owner.builder().build());
         owner.validateExistingEmail(existingOwner);
         return mapper.toDTO(repository.save(owner));
@@ -52,11 +52,10 @@ public class OwnerService {
     }
 
     public OwnerDTO findById(Long id){
-        if(!repository.existsById(id)){
-            throw new BusinessException("Proprietário não encontrado");
-        }
+        Optional<Owner> opOwner = repository.findById(id);
 
-        return mapper.toDTO(repository.findById(id).get());
+        return opOwner.map(mapper::toDTO)
+            .orElseThrow(() -> new BusinessException("Proprietário não encontrado"));
     }
 
     public List<OwnerDTO> findByName(String name){

@@ -1,6 +1,7 @@
 package com.algaworks.algatransit.domain.model.entity;
 
 import com.algaworks.algatransit.domain.exception.BusinessException;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,19 +26,14 @@ public class Owner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "NAME")
     private String name;
+
+    @Column(name = "EMAIL")
     private String email;
+
+    @Column(name = "PHONE")
     private String phone;
-
-    @Override
-    public boolean equals(Object obj) {
-        return (obj instanceof Owner owner) && this.id.equals(owner.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 
     public void validateExistingEmail(Owner owner){
         if(existingEmail(owner)){
@@ -47,5 +43,15 @@ public class Owner {
 
     private boolean existingEmail(Owner owner){
         return this.email.equals(owner.getEmail()) && !this.equals(owner);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof Owner owner) && this.id.equals(owner.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

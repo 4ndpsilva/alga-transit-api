@@ -1,7 +1,9 @@
 package com.algaworks.algatransit.application.controller;
 
-import com.algaworks.algatransit.domain.model.dto.OwnerDTO;
-import com.algaworks.algatransit.domain.service.OwnerService;
+import com.algaworks.algatransit.domain.model.dto.VehicleDTO;
+import com.algaworks.algatransit.domain.model.dto.VehicleResponseDTO;
+import com.algaworks.algatransit.domain.service.VehicleQueriesService;
+import com.algaworks.algatransit.domain.service.VehicleService;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,19 +20,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/v1/owners")
+@RequestMapping("/api/v1/vehicles")
 @RequiredArgsConstructor
-public class OwnerController {
+public class VehicleController {
 
-    private final OwnerService service;
+    private final VehicleService service;
+    private final VehicleQueriesService queriesService;
 
     @PostMapping
-    public ResponseEntity<OwnerDTO> save(@RequestBody @Valid OwnerDTO requestDTO){
+    public ResponseEntity<VehicleResponseDTO> save(@RequestBody @Valid VehicleDTO requestDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(requestDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OwnerDTO> update(@PathVariable Long id, @RequestBody @Valid OwnerDTO requestDTO){
+    public ResponseEntity<VehicleResponseDTO> update(@PathVariable Long id, @RequestBody @Valid VehicleDTO requestDTO){
         return ResponseEntity.ok(service.update(id, requestDTO));
     }
 
@@ -46,22 +49,27 @@ public class OwnerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OwnerDTO> findById(@PathVariable Long id){
+    public ResponseEntity<VehicleResponseDTO> findById(@PathVariable Long id){
         try{
-            return ResponseEntity.ok(service.findById(id));
+            return ResponseEntity.ok(queriesService.findById(id));
         }
         catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @GetMapping("/name/{name}")
-    public ResponseEntity<List<OwnerDTO>> findByName(@PathVariable String name){
-        return ResponseEntity.ok(service.findByName(name));
+    @GetMapping("/plate/{plate}")
+    public ResponseEntity<VehicleResponseDTO> findByPlate(@PathVariable String plate){
+        return ResponseEntity.ok(queriesService.findByPlate(plate));
+    }
+
+    @GetMapping("/owner/{ownerId}")
+    public ResponseEntity<List<VehicleResponseDTO>> findByPlate(@PathVariable Long ownerId){
+        return ResponseEntity.ok(queriesService.findByOwner(ownerId));
     }
 
     @GetMapping
-    public ResponseEntity<List<OwnerDTO>> findAll(){
-        return ResponseEntity.ok(service.findAll());
+    public ResponseEntity<List<VehicleResponseDTO>> findAll(){
+        return ResponseEntity.ok(queriesService.findAll());
     }
 }

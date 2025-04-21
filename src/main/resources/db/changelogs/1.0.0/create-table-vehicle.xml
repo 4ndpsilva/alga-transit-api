@@ -61,7 +61,7 @@
             <column name="owner_id" value="1"/>
             <column name="brand" value="Audi"/>
             <column name="model" value="A3"/>
-            <column name="plate" value="aaa-123"/>
+            <column name="plate" value="AAA1234"/>
             <column name="status" value="REGULAR"/>
             <column name="registration_date" value="now()"/>
         </insert>
@@ -70,7 +70,7 @@
             <column name="owner_id" value="1"/>
             <column name="brand" value="Volksvagem"/>
             <column name="model" value="Fusca"/>
-            <column name="plate" value="bbb-333"/>
+            <column name="plate" value="BBB3333"/>
             <column name="status" value="SEIZED"/>
             <column name="registration_date" value="now()"/>
             <column name="date_of_seizure" value="now()"/>
@@ -80,7 +80,7 @@
             <column name="owner_id" value="2"/>
             <column name="brand" value="Ferrari"/>
             <column name="model" value="F50"/>
-            <column name="plate" value="xxx-555"/>
+            <column name="plate" value="XXX5555"/>
             <column name="status" value="SEIZED"/>
             <column name="registration_date" value="now()"/>
             <column name="date_of_seizure" value="now()"/>
