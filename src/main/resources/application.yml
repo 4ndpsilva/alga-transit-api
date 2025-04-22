@@ -1,3 +1,5 @@
+api-url-help: http://algatransito.com/help
+
 spring:
   application:
     name: alga-transit-api

@@ -11,7 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,10 +49,10 @@ public class Vehicle {
     private StatusVehicle status;
 
     @Column(name = "REGISTRATION_DATE")
-    private LocalDateTime registrationDate;
+    private OffsetDateTime registrationDate;
 
     @Column(name = "DATE_OF_SEIZURE")
-    private LocalDateTime dateOfSeizure;
+    private OffsetDateTime dateOfSeizure;
 
     public void validateExistingPLate(Vehicle vehicle){
         if(existingPlate(vehicle)){

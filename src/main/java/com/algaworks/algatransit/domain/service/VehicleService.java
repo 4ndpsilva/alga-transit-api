@@ -14,7 +14,7 @@ import com.algaworks.algatransit.domain.model.entity.StatusVehicle;
 import com.algaworks.algatransit.domain.model.entity.Vehicle;
 import com.algaworks.algatransit.domain.model.entity.Vehicle.VehicleMsg;
 import com.algaworks.algatransit.domain.repository.VehicleRepository;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +39,7 @@ public class VehicleService {
         Vehicle newVehicle = mapper.toEntity(dto);
         newVehicle.setOwner(getOwner(dto.getOwnerId()));
         newVehicle.setStatus(StatusVehicle.REGULAR);
-        newVehicle.setRegistrationDate(LocalDateTime.now());
+        newVehicle.setRegistrationDate(OffsetDateTime.now());
 
         return mapper.toDTO(repository.save(newVehicle));
     }

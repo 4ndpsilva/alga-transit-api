@@ -1,11 +1,12 @@
 package com.algaworks.algatransit.domain.model.dto;
 
 import com.algaworks.algatransit.domain.model.entity.StatusVehicle;
+import com.algaworks.algatransit.infrastructure.util.Constant;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import jakarta.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,9 +35,9 @@ public class VehicleResponseDTO {
     private StatusVehicle status;
 
     @NotBlank
-    @JsonFormat(pattern = "yyyy-MM-dd:HH:mm:ss")
-    private LocalDateTime registrationDate;
+    @JsonFormat(pattern = Constant.DATE_TIME_PATTERN)
+    private OffsetDateTime registrationDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd:HH:mm:ss")
-    private LocalDateTime dateOfSeizure;
+    @JsonFormat(pattern = Constant.DATE_TIME_PATTERN)
+    private OffsetDateTime dateOfSeizure;
 }
