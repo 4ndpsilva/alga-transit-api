@@ -4,11 +4,6 @@ import static com.algaworks.algatransit.domain.model.entity.Vehicle.VehicleMsg.V
 
 import com.algaworks.algatransit.domain.exception.AlreadyExistsException;
 import com.algaworks.algatransit.domain.exception.ResourceNotFoundException;
-import com.algaworks.algatransit.domain.mapper.OwnerMapper;
-import com.algaworks.algatransit.domain.mapper.VehicleMapper;
-import com.algaworks.algatransit.domain.model.dto.OwnerDTO;
-import com.algaworks.algatransit.domain.model.dto.VehicleDTO;
-import com.algaworks.algatransit.domain.model.dto.VehicleResponseDTO;
 import com.algaworks.algatransit.domain.model.entity.Owner;
 import com.algaworks.algatransit.domain.model.entity.StatusVehicle;
 import com.algaworks.algatransit.domain.model.entity.Vehicle;
@@ -24,39 +19,35 @@ import org.springframework.transaction.annotation.Transactional;
 public class VehicleService {
     private final VehicleRepository repository;
     private final VehicleQueriesService queriesService;
-    private final VehicleMapper mapper;
     private final OwnerService ownerService;
-    private final OwnerMapper ownerMapper;
 
     @Transactional
-    public VehicleResponseDTO save(VehicleDTO dto){
-        boolean existingPlate = repository.findByPlate(dto.getPlate()).isPresent();
+    public Vehicle save(Vehicle entity){
+        boolean existingPlate = repository.findByPlate(entity.getPlate()).isPresent();
 
         if(existingPlate){
-            throw new AlreadyExistsException(VEHICLE_002, dto.getPlate());
+            throw new AlreadyExistsException(VEHICLE_002, entity.getPlate());
         }
 
-        Vehicle newVehicle = mapper.toEntity(dto);
-        newVehicle.setOwner(getOwner(dto.getOwnerId()));
-        newVehicle.setStatus(StatusVehicle.REGULAR);
-        newVehicle.setRegistrationDate(OffsetDateTime.now());
+        entity.setOwner(getOwner(entity.getOwner().getId()));
+        entity.setStatus(StatusVehicle.REGULAR);
+        entity.setRegistrationDate(OffsetDateTime.now());
 
-        return mapper.toDTO(repository.save(newVehicle));
+        return repository.save(entity);
     }
 
     @Transactional
-    public VehicleResponseDTO update(Long id, VehicleDTO dto){
-        VehicleResponseDTO vehicleResponseDTO = queriesService.findById(id);
-        Vehicle vehicle = mapper.toEntity(dto);
+    public Vehicle update(Long id, Vehicle entity){
+        Vehicle oldVehicle = queriesService.findById(id);
 
-        Vehicle vehicleByPlate = repository.findByPlate(dto.getPlate()).orElse(Vehicle.builder().build());
-        vehicle.setId(id);
-        vehicle.setOwner(getOwner(dto.getOwnerId()));
-        vehicle.setStatus(vehicleResponseDTO.getStatus());
-        vehicle.setRegistrationDate(vehicleResponseDTO.getRegistrationDate());
-        vehicle.validateExistingPLate(vehicleByPlate);
+        Vehicle vehicleByPlate = repository.findByPlate(entity.getPlate()).orElse(Vehicle.builder().build());
+        entity.setId(id);
+        entity.setOwner(getOwner(entity.getOwner().getId()));
+        entity.setStatus(oldVehicle.getStatus());
+        entity.setRegistrationDate(oldVehicle.getRegistrationDate());
+        entity.validateExistingPLate(vehicleByPlate);
 
-        return mapper.toDTO(repository.save(vehicle));
+        return repository.save(entity);
     }
 
     @Transactional
@@ -69,7 +60,6 @@ public class VehicleService {
     }
 
     private Owner getOwner(Long ownerId){
-        OwnerDTO ownerDTO = ownerService.findById(ownerId);
-        return ownerMapper.toEntity(ownerDTO);
+        return ownerService.findById(ownerId);
     }
 }

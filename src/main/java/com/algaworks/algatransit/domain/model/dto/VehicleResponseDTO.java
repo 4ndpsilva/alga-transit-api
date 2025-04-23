@@ -20,7 +20,7 @@ public class VehicleResponseDTO {
     @JsonProperty(access = Access.READ_ONLY)
     private Long id;
 
-    private OwnerDTO owner;
+    private OwnerSummaryResponseDTO owner;
 
     @NotBlank
     private String brand;

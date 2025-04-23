@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class VehicleDTO {
+public class VehicleRequestDTO {
 
     @NotNull
     private Long ownerId;

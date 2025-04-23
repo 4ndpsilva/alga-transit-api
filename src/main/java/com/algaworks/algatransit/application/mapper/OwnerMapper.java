@@ -1,4 +1,4 @@
-package com.algaworks.algatransit.domain.mapper;
+package com.algaworks.algatransit.application.mapper;
 
 import com.algaworks.algatransit.domain.model.dto.OwnerDTO;
 import com.algaworks.algatransit.domain.model.entity.Owner;

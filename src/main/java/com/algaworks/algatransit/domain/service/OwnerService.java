@@ -5,8 +5,6 @@ import static com.algaworks.algatransit.domain.model.entity.Owner.OwnerMsg.OWNER
 
 import com.algaworks.algatransit.domain.exception.AlreadyExistsException;
 import com.algaworks.algatransit.domain.exception.ResourceNotFoundException;
-import com.algaworks.algatransit.domain.mapper.OwnerMapper;
-import com.algaworks.algatransit.domain.model.dto.OwnerDTO;
 import com.algaworks.algatransit.domain.model.entity.Owner;
 import com.algaworks.algatransit.domain.repository.OwnerRepository;
 import java.util.List;
@@ -19,31 +17,28 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class OwnerService {
     private final OwnerRepository repository;
-    private final OwnerMapper mapper;
 
     @Transactional
-    public OwnerDTO save(OwnerDTO dto){
-        Owner newOwner = mapper.toEntity(dto);
-        boolean existing = repository.findByEmail(newOwner.getEmail()).isPresent();
+    public Owner save(Owner entity){
+        boolean existing = repository.findByEmail(entity.getEmail()).isPresent();
 
         if(existing){
             throw new AlreadyExistsException(OWNER_002);
         }
 
-        return mapper.toDTO(repository.save(newOwner));
+        return repository.save(entity);
     }
 
     @Transactional
-    public OwnerDTO update(Long id, OwnerDTO dto){
+    public Owner update(Long id, Owner entity){
         if(!repository.existsById(id)){
             throw new ResourceNotFoundException(OWNER_001);
         }
 
-        Owner owner = mapper.toEntity(dto);
-        owner.setId(id);
-        Owner existingOwner = repository.findByEmail(owner.getEmail()).orElse(Owner.builder().build());
-        owner.validateExistingEmail(existingOwner);
-        return mapper.toDTO(repository.save(owner));
+        entity.setId(id);
+        Owner existingOwner = repository.findByEmail(entity.getEmail()).orElse(Owner.builder().build());
+        entity.validateExistingEmail(existingOwner);
+        return repository.save(entity);
     }
 
     @Transactional
@@ -55,18 +50,21 @@ public class OwnerService {
         repository.deleteById(id);
     }
 
-    public OwnerDTO findById(Long id){
+    public Owner findById(Long id){
         Optional<Owner> opOwner = repository.findById(id);
 
-        return opOwner.map(mapper::toDTO)
-            .orElseThrow(() -> new ResourceNotFoundException(OWNER_001));
+        if(opOwner.isPresent()){
+            return opOwner.get();
+        }
+
+        throw new ResourceNotFoundException(OWNER_001);
     }
 
-    public List<OwnerDTO> findByName(String name){
-        return mapper.toListDTO(repository.findByNameContaining(name));
+    public List<Owner> findByName(String name){
+        return repository.findByNameContaining(name);
     }
 
-    public List<OwnerDTO> findAll(){
-        return mapper.toListDTO(repository.findAll());
+    public List<Owner> findAll(){
+        return repository.findAll();
     }
 }
