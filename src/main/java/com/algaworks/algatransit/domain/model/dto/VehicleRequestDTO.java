@@ -1,15 +1,17 @@
 package com.algaworks.algatransit.domain.model.dto;
 
+import static com.algaworks.algatransit.infrastructure.util.Constant.REGEX_PLATE;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class VehicleRequestDTO {
@@ -24,6 +26,6 @@ public class VehicleRequestDTO {
     private String model;
 
     @NotBlank
-    @Pattern(regexp = "[A-Z]{3}[0-9][0-9A-Z][0-9]{2}")
+    @Pattern(regexp = REGEX_PLATE)
     private String plate;
 }

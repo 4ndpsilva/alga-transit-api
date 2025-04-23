@@ -7,4 +7,5 @@
 
     <include file="create-table-owner.xml" relativeToChangelogFile="true"/>
     <include file="create-table-vehicle.xml" relativeToChangelogFile="true"/>
+    <include file="create-table-seizure.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

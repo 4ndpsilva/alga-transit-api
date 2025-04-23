@@ -1,6 +1,7 @@
 package com.algaworks.algatransit.domain.model.entity;
 
 import com.algaworks.algatransit.domain.exception.AlreadyExistsException;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,11 +11,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
-import java.util.Objects;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,6 +33,7 @@ import lombok.Setter;
 public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @ManyToOne
@@ -54,6 +59,9 @@ public class Vehicle {
     @Column(name = "DATE_OF_SEIZURE")
     private OffsetDateTime dateOfSeizure;
 
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
+    private Set<Seizure> seizures = new LinkedHashSet<>();
+
     public void validateExistingPLate(Vehicle vehicle){
         if(existingPlate(vehicle)){
             throw new AlreadyExistsException(VehicleMsg.VEHICLE_002, vehicle.getPlate());
@@ -64,19 +72,18 @@ public class Vehicle {
         return this.plate.equals(vehicle.getPlate()) && !this.equals(vehicle);
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return (obj instanceof Vehicle vehicle) && this.id.equals(vehicle.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
     public interface VehicleMsg{
         String VEHICLE_001 = "VEHICLE-001";
         String VEHICLE_002 = "VEHICLE-002";
         String VEHICLE_003 = "VEHICLE-003";
+    }
+
+    public Seizure addSeizure(Seizure seizure){
+        status = StatusVehicle.SEIZED;
+        dateOfSeizure = OffsetDateTime.now();
+        seizure.setOccurrenceDate(OffsetDateTime.now());
+        seizure.setVehicle(this);
+        seizures.add(seizure);
+        return seizure;
     }
 }

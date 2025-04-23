@@ -58,7 +58,7 @@ public class VehicleController {
     }
 
     @GetMapping("/owner/{ownerId}")
-    public ResponseEntity<List<VehicleResponseDTO>> findByPlate(@PathVariable Long ownerId){
+    public ResponseEntity<List<VehicleResponseDTO>> findByOwner(@PathVariable Long ownerId){
         return ResponseEntity.ok(mapper.toListDTO(queriesService.findByOwner(ownerId)));
     }
 

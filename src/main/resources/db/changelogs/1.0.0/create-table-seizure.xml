@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="create-table-seizure" author="aps">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="TB_SEIZURE"/>
+            </not>
+        </preConditions>
+        <createTable tableName="TB_SEIZURE">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="vehicle_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="text">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="fine_amount" type="decimal(10,2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="occurrence_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <addForeignKeyConstraint
+            baseTableName="TB_SEIZURE"
+            baseColumnNames="vehicle_id"
+            constraintName="fk_seizure"
+            referencedTableName="TB_VEHICLE"
+            referencedColumnNames="id"
+        />
+    </changeSet>
+</databaseChangeLog>
