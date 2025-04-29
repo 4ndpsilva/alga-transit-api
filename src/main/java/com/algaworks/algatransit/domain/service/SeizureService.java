@@ -13,7 +13,23 @@ public class SeizureService {
 
     @Transactional
     public Seizure save(Long vehicleId, Seizure seizure){
-        Vehicle vehicle = vehicleQueriesService.findById(vehicleId);
+        Vehicle vehicle = getVehicle(vehicleId);
         return vehicle.addSeizure(seizure);
+    }
+
+    @Transactional
+    public void apprehend(Long vehicleId){
+        Vehicle vehicle = getVehicle(vehicleId);
+        vehicle.apprehend();
+    }
+
+    @Transactional
+    public void removeApprehension(Long vehicleId){
+        Vehicle vehicle = getVehicle(vehicleId);
+        vehicle.removeApprehension();
+    }
+
+    private Vehicle getVehicle(Long vehicleId){
+        return vehicleQueriesService.findById(vehicleId);
     }
 }

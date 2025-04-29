@@ -1,6 +1,7 @@
 package com.algaworks.algatransit.domain.model.entity;
 
 import com.algaworks.algatransit.domain.exception.AlreadyExistsException;
+import com.algaworks.algatransit.domain.exception.BusinessException;
 import com.algaworks.algatransit.infrastructure.exception.ErrorCode;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -74,11 +75,38 @@ public class Vehicle {
     }
 
     public Seizure addSeizure(Seizure seizure){
-        status = StatusVehicle.SEIZED;
-        dateOfSeizure = OffsetDateTime.now();
         seizure.setOccurrenceDate(OffsetDateTime.now());
         seizure.setVehicle(this);
         seizures.add(seizure);
         return seizure;
+    }
+
+    public void apprehend() {
+        if(isSeizure()){
+            throw new BusinessException(ErrorCode.VEHICLE_004.getCode(), plate);
+        }
+
+        updateStatus(StatusVehicle.SEIZED, OffsetDateTime.now());
+    }
+
+    public void removeApprehension() {
+        if(notSeizure()){
+            throw new BusinessException(ErrorCode.VEHICLE_005.getCode(), plate);
+        }
+
+        updateStatus(StatusVehicle.REGULAR, null);
+    }
+
+    private void updateStatus(StatusVehicle status, OffsetDateTime date){
+        setStatus(status);
+        setDateOfSeizure(date);
+    }
+
+    private boolean isSeizure(){
+        return StatusVehicle.SEIZED.equals(status);
+    }
+
+    private boolean notSeizure(){
+        return !isSeizure();
     }
 }

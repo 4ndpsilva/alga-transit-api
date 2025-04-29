@@ -13,7 +13,9 @@ public enum ErrorCode {
 
     VEHICLE_001("VEHICLE-001"),
     VEHICLE_002("VEHICLE-002"),
-    VEHICLE_003("VEHICLE-003");
+    VEHICLE_003("VEHICLE-003"),
+    VEHICLE_004("VEHICLE-004"),
+    VEHICLE_005("VEHICLE-005");
 
     private final String code;
 
