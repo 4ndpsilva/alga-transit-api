@@ -13,7 +13,7 @@ public class ImpoundService {
     @Transactional
     public void impound(Long vehicleId){
         Vehicle vehicle = getVehicle(vehicleId);
-        vehicle.apprehend();
+        vehicle.impound();
     }
 
     @Transactional

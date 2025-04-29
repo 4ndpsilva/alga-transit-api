@@ -81,7 +81,7 @@ public class Vehicle {
         return seizure;
     }
 
-    public void apprehend() {
+    public void impound() {
         if(isSeizure()){
             throw new AlreadyExistsException(ErrorCode.VEHICLE_004.getCode(), id.toString());
         }
