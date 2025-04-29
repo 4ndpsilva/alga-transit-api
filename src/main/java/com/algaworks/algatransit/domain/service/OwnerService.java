@@ -1,10 +1,10 @@
 package com.algaworks.algatransit.domain.service;
 
-import static com.algaworks.algatransit.domain.model.entity.Owner.OwnerMsg.OWNER_001;
-import static com.algaworks.algatransit.domain.model.entity.Owner.OwnerMsg.OWNER_002;
+import static com.algaworks.algatransit.infrastructure.exception.ErrorCode.OWNER_001;
+import static com.algaworks.algatransit.infrastructure.exception.ErrorCode.OWNER_002;
 
 import com.algaworks.algatransit.domain.exception.AlreadyExistsException;
-import com.algaworks.algatransit.domain.exception.ResourceNotFoundException;
+import com.algaworks.algatransit.infrastructure.exception.ResourceNotFoundException;
 import com.algaworks.algatransit.domain.model.entity.Owner;
 import com.algaworks.algatransit.domain.repository.OwnerRepository;
 import java.util.List;
@@ -23,7 +23,7 @@ public class OwnerService {
         boolean existing = repository.findByEmail(entity.getEmail()).isPresent();
 
         if(existing){
-            throw new AlreadyExistsException(OWNER_002);
+            throw new AlreadyExistsException(OWNER_002.getCode());
         }
 
         return repository.save(entity);
@@ -32,7 +32,7 @@ public class OwnerService {
     @Transactional
     public Owner update(Long id, Owner entity){
         if(!repository.existsById(id)){
-            throw new ResourceNotFoundException(OWNER_001);
+            throw new ResourceNotFoundException(OWNER_001.getCode());
         }
 
         entity.setId(id);
@@ -44,7 +44,7 @@ public class OwnerService {
     @Transactional
     public void delete(Long id){
         if(!repository.existsById(id)){
-            throw new ResourceNotFoundException(OWNER_001);
+            throw new ResourceNotFoundException(OWNER_001.getCode());
         }
 
         repository.deleteById(id);
@@ -57,7 +57,7 @@ public class OwnerService {
             return opOwner.get();
         }
 
-        throw new ResourceNotFoundException(OWNER_001);
+        throw new ResourceNotFoundException(OWNER_001.getCode());
     }
 
     public List<Owner> findByName(String name){

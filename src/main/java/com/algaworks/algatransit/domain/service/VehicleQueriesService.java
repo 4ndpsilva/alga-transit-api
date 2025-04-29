@@ -1,12 +1,10 @@
 package com.algaworks.algatransit.domain.service;
 
-import static com.algaworks.algatransit.domain.model.entity.Vehicle.VehicleMsg.VEHICLE_001;
-import static com.algaworks.algatransit.domain.model.entity.Vehicle.VehicleMsg.VEHICLE_003;
-
-import com.algaworks.algatransit.domain.exception.ResourceNotFoundException;
 import com.algaworks.algatransit.domain.model.entity.Owner;
 import com.algaworks.algatransit.domain.model.entity.Vehicle;
 import com.algaworks.algatransit.domain.repository.VehicleRepository;
+import com.algaworks.algatransit.infrastructure.exception.ErrorCode;
+import com.algaworks.algatransit.infrastructure.exception.ResourceNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +28,7 @@ public class VehicleQueriesService {
             return opVehicle.get();
         }
 
-        throw new ResourceNotFoundException(VEHICLE_003, plate);
+        throw new ResourceNotFoundException(ErrorCode.VEHICLE_003.getCode(), plate);
     }
 
     public Vehicle findById(Long id){
@@ -40,7 +38,7 @@ public class VehicleQueriesService {
             return opVehicle.get();
         }
 
-        throw new ResourceNotFoundException(VEHICLE_001);
+        throw new ResourceNotFoundException(ErrorCode.VEHICLE_001.getCode());
     }
 
     public List<Vehicle> findAll(){

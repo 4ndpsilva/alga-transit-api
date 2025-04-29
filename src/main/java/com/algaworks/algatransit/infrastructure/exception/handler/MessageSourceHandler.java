@@ -2,7 +2,7 @@ package com.algaworks.algatransit.infrastructure.exception.handler;
 
 import static java.util.stream.Collectors.toMap;
 
-import com.algaworks.algatransit.domain.exception.BaseException;
+import com.algaworks.algatransit.infrastructure.exception.BaseException;
 import java.net.URI;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;

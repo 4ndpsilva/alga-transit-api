@@ -1,7 +1,9 @@
 package com.algaworks.algatransit.domain.exception;
 
 
-public class AlreadyExistsException extends BaseException{
+import com.algaworks.algatransit.infrastructure.exception.BaseException;
+
+public class AlreadyExistsException extends BaseException {
     public AlreadyExistsException(String message){
         super(message);
     }

@@ -1,6 +1,6 @@
-package com.algaworks.algatransit.domain.exception;
+package com.algaworks.algatransit.infrastructure.exception;
 
-public class ResourceNotFoundException extends BaseException{
+public class ResourceNotFoundException extends BaseException {
     public ResourceNotFoundException(String message){
         super(message);
     }

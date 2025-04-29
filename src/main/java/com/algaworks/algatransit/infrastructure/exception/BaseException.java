@@ -1,4 +1,4 @@
-package com.algaworks.algatransit.domain.exception;
+package com.algaworks.algatransit.infrastructure.exception;
 
 import lombok.Getter;
 

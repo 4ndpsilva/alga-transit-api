@@ -1,6 +1,7 @@
 package com.algaworks.algatransit.domain.model.entity;
 
 import com.algaworks.algatransit.domain.exception.AlreadyExistsException;
+import com.algaworks.algatransit.infrastructure.exception.ErrorCode;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -64,18 +65,12 @@ public class Vehicle {
 
     public void validateExistingPLate(Vehicle vehicle){
         if(existingPlate(vehicle)){
-            throw new AlreadyExistsException(VehicleMsg.VEHICLE_002, vehicle.getPlate());
+            throw new AlreadyExistsException(ErrorCode.VEHICLE_002.getCode(), vehicle.getPlate());
         }
     }
 
     private boolean existingPlate(Vehicle vehicle){
         return this.plate.equals(vehicle.getPlate()) && !this.equals(vehicle);
-    }
-
-    public interface VehicleMsg{
-        String VEHICLE_001 = "VEHICLE-001";
-        String VEHICLE_002 = "VEHICLE-002";
-        String VEHICLE_003 = "VEHICLE-003";
     }
 
     public Seizure addSeizure(Seizure seizure){

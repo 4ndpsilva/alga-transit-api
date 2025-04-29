@@ -2,7 +2,7 @@ package com.algaworks.algatransit.infrastructure.exception.handler;
 
 import com.algaworks.algatransit.domain.exception.AlreadyExistsException;
 import com.algaworks.algatransit.domain.exception.BusinessException;
-import com.algaworks.algatransit.domain.exception.ResourceNotFoundException;
+import com.algaworks.algatransit.infrastructure.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

@@ -1,14 +1,12 @@
 package com.algaworks.algatransit.domain.service;
 
-import static com.algaworks.algatransit.domain.model.entity.Vehicle.VehicleMsg.VEHICLE_002;
-
 import com.algaworks.algatransit.domain.exception.AlreadyExistsException;
-import com.algaworks.algatransit.domain.exception.ResourceNotFoundException;
 import com.algaworks.algatransit.domain.model.entity.Owner;
 import com.algaworks.algatransit.domain.model.entity.StatusVehicle;
 import com.algaworks.algatransit.domain.model.entity.Vehicle;
-import com.algaworks.algatransit.domain.model.entity.Vehicle.VehicleMsg;
 import com.algaworks.algatransit.domain.repository.VehicleRepository;
+import com.algaworks.algatransit.infrastructure.exception.ErrorCode;
+import com.algaworks.algatransit.infrastructure.exception.ResourceNotFoundException;
 import java.time.OffsetDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,7 +24,7 @@ public class VehicleService {
         boolean existingPlate = repository.findByPlate(entity.getPlate()).isPresent();
 
         if(existingPlate){
-            throw new AlreadyExistsException(VEHICLE_002, entity.getPlate());
+            throw new AlreadyExistsException(ErrorCode.VEHICLE_002.getCode(), entity.getPlate());
         }
 
         entity.setOwner(getOwner(entity.getOwner().getId()));
@@ -53,7 +51,7 @@ public class VehicleService {
     @Transactional
     public void delete(Long id){
         if(!repository.existsById(id)){
-            throw new ResourceNotFoundException(VehicleMsg.VEHICLE_001);
+            throw new ResourceNotFoundException(ErrorCode.VEHICLE_001.getCode());
         }
 
         repository.deleteById(id);

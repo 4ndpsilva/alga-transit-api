@@ -1,6 +1,7 @@
 package com.algaworks.algatransit.domain.model.entity;
 
 import com.algaworks.algatransit.domain.exception.AlreadyExistsException;
+import com.algaworks.algatransit.infrastructure.exception.ErrorCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,16 +39,11 @@ public class Owner {
 
     public void validateExistingEmail(Owner owner){
         if(existingEmail(owner)){
-            throw new AlreadyExistsException(OwnerMsg.OWNER_002);
+            throw new AlreadyExistsException(ErrorCode.OWNER_002.getCode());
         }
     }
 
     private boolean existingEmail(Owner owner){
         return this.email.equals(owner.getEmail()) && !this.equals(owner);
-    }
-
-    public interface OwnerMsg{
-        String OWNER_001 = "OWNER-001";
-        String OWNER_002 = "OWNER-002";
     }
 }
