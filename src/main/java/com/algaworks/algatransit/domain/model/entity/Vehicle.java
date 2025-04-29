@@ -83,15 +83,15 @@ public class Vehicle {
 
     public void apprehend() {
         if(isSeizure()){
-            throw new BusinessException(ErrorCode.VEHICLE_004.getCode(), plate);
+            throw new AlreadyExistsException(ErrorCode.VEHICLE_004.getCode(), id.toString());
         }
 
         updateStatus(StatusVehicle.SEIZED, OffsetDateTime.now());
     }
 
-    public void removeApprehension() {
+    public void removeImpound() {
         if(notSeizure()){
-            throw new BusinessException(ErrorCode.VEHICLE_005.getCode(), plate);
+            throw new BusinessException(ErrorCode.VEHICLE_005.getCode(), id.toString());
         }
 
         updateStatus(StatusVehicle.REGULAR, null);

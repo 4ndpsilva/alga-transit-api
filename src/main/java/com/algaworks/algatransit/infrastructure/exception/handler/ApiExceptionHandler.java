@@ -40,6 +40,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Object> handleBusinessException(BusinessException ex){
-        return messageSourceHandler.buildResponseEntityException(ex, HttpStatus.PRECONDITION_FAILED);
+        return messageSourceHandler.buildResponseEntityException(ex, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }
