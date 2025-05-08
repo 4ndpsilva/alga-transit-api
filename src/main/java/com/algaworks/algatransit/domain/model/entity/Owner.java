@@ -10,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,7 +24,6 @@ import lombok.Setter;
 public class Owner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
     private Long id;
 
     @Column(name = "NAME")
@@ -44,6 +42,6 @@ public class Owner {
     }
 
     private boolean existingEmail(Owner owner){
-        return this.email.equals(owner.getEmail()) && !this.equals(owner);
+        return this.email.equals(owner.getEmail()) && !(this.id.equals(owner.id));
     }
 }
