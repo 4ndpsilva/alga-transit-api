@@ -21,7 +21,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 public class MessageSourceHandler {
     private final MessageSource messageSource;
 
-    @Value("${api-url-help}")
+    @Value("${alga-transit.api-url-help}")
     private String apiUrlHelp;
 
     public ResponseEntity<Object> buildResponseEntityException(BaseException ex, HttpStatus httpStatus){

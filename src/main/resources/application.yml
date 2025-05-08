@@ -1,4 +1,7 @@
-api-url-help: http://algatransito.com/help
+alga-transit:
+  client-web:
+    url: http://localhost:*
+  api-url-help: http://algatransito.com/help
 
 spring:
   application:
